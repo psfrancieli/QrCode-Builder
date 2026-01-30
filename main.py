@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QFileDialog, QPushButton
 from PyQt5.QtGui import QPixmap
 from PyQt5.uic import loadUi
 from pyshorteners import Shortener
@@ -13,9 +13,6 @@ def CREATE_SHORT_URL(url):
 def CREATE_QRCODE(link):
     img = qrcode.make(link)
     img.save("qrcode.png")
-
-def GET_LOCAL_PATH(myPath):
-    pass
 
 class QrCode(QMainWindow):
     def __init__(self, **kwargs):
@@ -46,21 +43,27 @@ class QrCode(QMainWindow):
     @pyqtSlot()
     def on_salvar_clicked(self):
         self.salvarArquivo()
-
+        
     def salvarArquivo(self):
         nomeArquivo, _ = QFileDialog.getSaveFileName(self, "Salvar Imagem")
 
         if nomeArquivo:
             caminho = path.dirname(nomeArquivo)
             nome = nomeArquivo.removeprefix(caminho)
+            self.showMessage("Salvo", "Imagem salva com sucesso!")
+            self.reset()
 
-            #  ler foto
             with open("qrcode.png", "rb") as fotoQrcode:
                 dadosQrcode = fotoQrcode.read()
 
-            #  salvar foto
             with open(caminho+f"{nome}.png", "wb") as foto:
                 foto.write(dadosQrcode)
+
+    def reset(self):
+        self.url1.setText("")
+        self.url2.setText("")
+        self.img.clear()
+        self.salvar.setDisabled(True)
 
     def showMessage(self, title, message):
         QMessageBox.information(self, title, message)
@@ -70,5 +73,3 @@ if __name__ == "__main__":
     app = QApplication([])
     tela = QrCode()
     app.exec_()
-
-# https://roadmap.sh/ai/roadmap
