@@ -30,15 +30,18 @@ class QrCode(QMainWindow):
     def on_gerar_clicked(self):
         valor = self.getUrl()
 
-        if self.getUrl() == "":
+        if valor == "":
             self.showMessage("Erro", "URL inválida!")
             return
         else:
-            url = CREATE_SHORT_URL(valor)
-            CREATE_QRCODE(url)
-            self.setShortUrl(url)
-            self.img.setPixmap(QPixmap("qrcode.png"))
-            self.salvar.setEnabled(True)
+            try:
+                url = CREATE_SHORT_URL(valor)
+                CREATE_QRCODE(url)
+                self.setShortUrl(url)
+                self.img.setPixmap(QPixmap("qrcode.png"))
+                self.salvar.setEnabled(True)
+            except:
+                self.showMessage("Erro", "URL inválida!")
 
     @pyqtSlot()
     def on_salvar_clicked(self):
