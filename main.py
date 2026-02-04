@@ -1,14 +1,15 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox, QFileDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5.uic import loadUi
-from pyshorteners import Shortener
+from pyshorteners import Shortener1
 from PyQt5.QtCore import pyqtSlot
 from os import path
+import pyshorteners.tinyurl
 import qrcode
 import sys
 
 def CREATE_SHORT_URL(url):
-    link = Shortener()
+    link = Shortener1()
     return link.tinyurl.short(url)
 
 def CREATE_QRCODE(link):
@@ -18,6 +19,8 @@ def CREATE_QRCODE(link):
 def loadFile(file):
     base_path = getattr(sys, "_MEIPASS", path.dirname(path.abspath(__file__)))
     return path.join(base_path, file)
+
+
 class QrCode(QMainWindow):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
